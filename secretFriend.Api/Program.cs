@@ -1,4 +1,5 @@
-using secretFriend.Api.Services;
+using secretFriend.Api.Application;
+using secretFriend.Api.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,9 +9,11 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-// Registrar servicios de dependencias
-builder.Services.AddSingleton<Random>();
-builder.Services.AddScoped<ISecretFriendService, SecretFriendService>();
+// Configurar capas de la aplicación
+builder.Services.AddApplication();
+
+// Configurar infraestructura (MongoDB)
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // Configurar logging
 builder.Services.AddLogging();
@@ -47,8 +50,9 @@ app.MapGet("/", () => new
 {
     message = "¡Bienvenido al API de Amigo Secreto!",
     documentation = "/openapi/v1.json",
-    health = "/api/secretfriend/health",
-    info = "/api/secretfriend/info",
+    health = "/api/health",
+    info = "/api/info",
+    games = "/api/games",
     timestamp = DateTime.UtcNow
 })
 .WithName("Welcome")

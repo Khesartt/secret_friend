@@ -1,4 +1,4 @@
-namespace secretFriend.Api.Models;
+namespace secretFriend.Api.Domain.Entities;
 
 public class Player
 {

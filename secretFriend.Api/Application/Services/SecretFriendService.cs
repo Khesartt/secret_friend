@@ -1,14 +1,45 @@
-using secretFriend.Api.Models;
+using secretFriend.Api.Application.DTOs;
+using secretFriend.Api.Application.Interfaces;
+using secretFriend.Api.Domain.Entities;
+using secretFriend.Api.Domain.Repositories;
+using SecretFriend.Api.Application.Resources;
 
-namespace secretFriend.Api.Services;
+namespace secretFriend.Api.Application.Services;
 
-public class SecretFriendService(Random random) : ISecretFriendService
+public class SecretFriendService(Random random, ISecretFriendGameRepository repository) : ISecretFriendService
 {
-    public SecretFriendResponse GenerateSecretFriends(List<Player> players)
+    public async Task<SecretFriendResponse> GenerateAndSaveSecretFriendsAsync(SecretFriendRequest request)
+    {
+        var response = GenerateSecretFriends(request.Players);
+
+        var game = new SecretFriendGame
+        {
+            Name = request.GameName ?? $"Amigo Secreto {DateTime.UtcNow:yyyy-MM-dd HH:mm}",
+            Players = request.Players,
+            Assignments = response.Assignments,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        await repository.SaveAsync(game);
+
+        return response;
+    }
+
+    public async Task<IEnumerable<SecretFriendGame>> GetAllGamesAsync()
+    {
+        return await repository.GetAllAsync();
+    }
+
+    public async Task<SecretFriendGame?> GetGameByIdAsync(string id)
+    {
+        return await repository.GetByIdAsync(id);
+    }
+
+    private SecretFriendResponse GenerateSecretFriends(List<Player> players)
     {
         if (players.Count < 2)
         {
-            throw new ArgumentException("Se requieren al menos 2 jugadores para el amigo secreto");
+            throw new ArgumentException(Messages.MinimumPlayersRequired);
         }
 
         ValidatePlayers(players);
@@ -18,7 +49,7 @@ public class SecretFriendService(Random random) : ISecretFriendService
         var response = new SecretFriendResponse
         {
             Assignments = assignments,
-            Message = $"¡Amigos secretos generados exitosamente para {players.Count} jugadores!",
+            Message = string.Format(Messages.SecretFriendsGeneratedSuccessfully, players.Count),
             GeneratedAt = DateTime.UtcNow
         };
 
@@ -35,7 +66,7 @@ public class SecretFriendService(Random random) : ISecretFriendService
 
         if (duplicateNames.Any())
         {
-            throw new ArgumentException($"Nombres duplicados encontrados: {string.Join(", ", duplicateNames)}");
+            throw new ArgumentException(string.Format(Messages.DuplicateNamesFound, string.Join(", ", duplicateNames)));
         }
 
         var duplicateEmails = players
@@ -46,7 +77,7 @@ public class SecretFriendService(Random random) : ISecretFriendService
 
         if (duplicateEmails.Any())
         {
-            throw new ArgumentException($"Emails duplicados encontrados: {string.Join(", ", duplicateEmails)}");
+            throw new ArgumentException(string.Format(Messages.DuplicateEmailsFound, string.Join(", ", duplicateEmails)));
         }
 
         var invalidPlayers = players
@@ -55,14 +86,14 @@ public class SecretFriendService(Random random) : ISecretFriendService
 
         if (invalidPlayers.Any())
         {
-            throw new ArgumentException("Todos los jugadores deben tener nombre y email válidos");
+            throw new ArgumentException(Messages.InvalidPlayersData);
         }
     }
 
     private List<SecretFriendAssignment> GenerateAssignments(List<Player> players)
     {
         const int maxAttempts = 1000;
-        
+
         for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
             var shuffledReceivers = new List<Player>(players);
@@ -94,7 +125,7 @@ public class SecretFriendService(Random random) : ISecretFriendService
             }
         }
 
-        throw new InvalidOperationException($"No se pudo generar una asignación válida después de {maxAttempts} intentos");
+        throw new InvalidOperationException(string.Format(Messages.AssignmentGenerationFailed, maxAttempts));
     }
 
     private void ShuffleList<T>(List<T> list)
