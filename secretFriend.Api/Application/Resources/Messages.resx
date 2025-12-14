@@ -88,4 +88,22 @@
   <data name="UnexpectedError" xml:space="preserve">
     <value>An unexpected error occurred. Please try again.</value>
   </data>
+  <data name="PlayerNotFound" xml:space="preserve">
+    <value>Player with email {0} not found in game {1}</value>
+  </data>
+  <data name="WishlistItemNotFound" xml:space="preserve">
+    <value>Wishlist item not found</value>
+  </data>
+  <data name="DuplicateWishlistItem" xml:space="preserve">
+    <value>Product {0} already exists in this player's wishlist</value>
+  </data>
+  <data name="WishlistItemCreatedSuccessfully" xml:space="preserve">
+    <value>Wishlist item created successfully</value>
+  </data>
+  <data name="WishlistItemUpdatedSuccessfully" xml:space="preserve">
+    <value>Wishlist item updated successfully</value>
+  </data>
+  <data name="WishlistItemDeletedSuccessfully" xml:space="preserve">
+    <value>Wishlist item deleted successfully</value>
+  </data>
 </root>

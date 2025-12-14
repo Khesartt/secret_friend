@@ -153,5 +153,59 @@ namespace SecretFriend.Api.Application.Resources {
                 return ResourceManager.GetString("ValidationErrors", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player with email {0} not found in game {1}.
+        /// </summary>
+        internal static string PlayerNotFound {
+            get {
+                return ResourceManager.GetString("PlayerNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wishlist item not found.
+        /// </summary>
+        internal static string WishlistItemNotFound {
+            get {
+                return ResourceManager.GetString("WishlistItemNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product {0} already exists in this player's wishlist.
+        /// </summary>
+        internal static string DuplicateWishlistItem {
+            get {
+                return ResourceManager.GetString("DuplicateWishlistItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wishlist item created successfully.
+        /// </summary>
+        internal static string WishlistItemCreatedSuccessfully {
+            get {
+                return ResourceManager.GetString("WishlistItemCreatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wishlist item updated successfully.
+        /// </summary>
+        internal static string WishlistItemUpdatedSuccessfully {
+            get {
+                return ResourceManager.GetString("WishlistItemUpdatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wishlist item deleted successfully.
+        /// </summary>
+        internal static string WishlistItemDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("WishlistItemDeletedSuccessfully", resourceCulture);
+            }
+        }
     }
 }

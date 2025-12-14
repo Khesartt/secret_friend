@@ -9,6 +9,7 @@ public static class ApplicationServiceCollectionExtensions
     {
         services.AddSingleton<Random>();
         services.AddScoped<ISecretFriendService, SecretFriendService>();
+        services.AddScoped<IWishlistService, WishlistService>();
         
         return services;
     }

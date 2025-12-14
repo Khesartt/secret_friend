@@ -2,6 +2,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using secretFriend.Api.Infrastructure.Configuration;
 using secretFriend.Api.Infrastructure.Persistence.MongoDb;
+using secretFriend.Api.Infrastructure.Persistence.Repositories;
 using secretFriend.Api.Domain.Repositories;
 
 namespace secretFriend.Api.Infrastructure;
@@ -35,6 +36,7 @@ public static class InfrastructureServiceCollectionExtensions
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<ISecretFriendGameRepository, SecretFriendGameRepository>();
+        services.AddScoped<IWishlistRepository, WishlistRepository>();
         
         return services;
     }
